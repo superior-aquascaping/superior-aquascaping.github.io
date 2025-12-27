@@ -240,7 +240,7 @@
         .btn-outline:hover { background: white; color: var(--primary); }
 
         /* --- Sections General --- */
-        section { padding: 8rem 10%; }
+        section { padding: 8rem 10%; position: relative; }
 
         .section-header {
             margin-bottom: 5rem;
@@ -431,6 +431,7 @@
             flex-direction: column;
             gap: 2rem;
             border-top: 1px solid #333;
+            position: relative;
         }
         
         .footer-content {
@@ -478,12 +479,21 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             margin-top: 1rem;
             transition: transform 0.2s;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            z-index: 10;
         }
-        
+
+        /* Specific positioning for specific sections */
+        #hero .edit-trigger { bottom: 30px; top: auto; right: auto; left: 50%; transform: translateX(-50%); }
+        .shrimp-content .edit-trigger { position: static; margin-top: 20px; }
+
         /* ONLY VISIBLE WHEN ADMIN ACTIVE CLASS IS PRESENT */
         .admin-active .edit-trigger { display: inline-flex !important; }
         
-        .edit-trigger:hover { transform: scale(1.1); }
+        .edit-trigger:hover { transform: scale(1.1) translateX(0); }
+        #hero .edit-trigger:hover { transform: translateX(-50%) scale(1.1); }
 
         /* --- Modal (Modern) --- */
         .modal {
@@ -496,16 +506,18 @@
             backdrop-filter: blur(5px);
             align-items: center;
             justify-content: center;
+            overflow-y: auto; /* Allow scrolling for tall modals */
         }
 
         .modal-content {
             background: var(--bg-body);
             padding: 3rem;
-            width: 90%; max-width: 550px;
+            width: 90%; max-width: 600px;
             border-radius: 12px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             position: relative;
             animation: slideIn 0.3s ease;
+            margin: 5% auto;
         }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -525,6 +537,22 @@
         .save-btn:hover { background: var(--accent); }
 
         .close-modal { position: absolute; right: 20px; top: 20px; font-size: 1.5rem; cursor: pointer; color: #999; }
+
+        /* Admin List Styling */
+        .admin-item-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: start;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .admin-item-content { flex-grow: 1; }
+        .btn-danger { background-color: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+        .btn-success { background-color: var(--accent); color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; margin-top: 10px; cursor: pointer; }
+        .btn-thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
 
         /* MOBILE RESPONSIVE UPDATES */
         @media (max-width: 768px) {
@@ -650,6 +678,7 @@
                 <p>The 'skeleton' of your aquarium. We provide professional hardscaping services using premium materials like Seiryu stone, Dragon stone, and Manzanita wood to create depth, perspective, and flow before water is even added.</p>
             </div>
         </div>
+        <button class="edit-trigger" onclick="openEdit('services')"><i class="fas fa-pen"></i></button>
     </section>
 
     <!-- Shrimp Room -->
@@ -705,7 +734,7 @@
             </div>
         </div>
         <div style="text-align: center; margin-top: 2rem;">
-            <button class="edit-trigger" onclick="openEdit('gallery')"><i class="fas fa-plus"></i> Add Image</button>
+            <button class="edit-trigger" onclick="openEdit('gallery')"><i class="fas fa-plus"></i> Manage Images</button>
         </div>
     </section>
 
@@ -726,10 +755,12 @@
                 <p>We exclusively use tissue culture plants to ensure your setup remains pest-free. Unlike potted plants, these are grown in sterile labs, guaranteeing no snails or algae are introduced to your new tank.</p>
             </div>
         </div>
+        <button class="edit-trigger" onclick="openEdit('blog')"><i class="fas fa-pen"></i></button>
     </section>
 
     <!-- Footer -->
     <footer id="contact">
+        <button class="edit-trigger" onclick="openEdit('contact')"><i class="fas fa-pen"></i></button>
         <div class="footer-content">
             <div class="contact-block">
                 <h3>Superior Aquascaping</h3>
@@ -879,7 +910,6 @@
                         siteData.hero.bgImage = "https://images.unsplash.com/photo-1573976366069-ee53f0cc76db?auto=format&fit=crop&q=80";
                         
                         // Force Override gallery with new hardcoded images if the fetched ones are old defaults
-                        // This is a simple check, ideally we'd have IDs, but checking first URL is enough for now
                         if (siteData.gallery.length > 0 && siteData.gallery[0].url.includes("images.unsplash.com")) {
                              siteData.gallery = DEFAULT_DATA.gallery;
                         }
@@ -1036,7 +1066,6 @@
         function login() {
             const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
-            // No longer reading from input
             
             if(u === 'admin' && p === '12345678') {
                 localStorage.setItem('isAdmin', 'true');
@@ -1048,7 +1077,6 @@
         }
 
         function openEdit(sec) {
-            // STRICT SECURITY CHECK
             if(!localStorage.getItem('isAdmin')) {
                 alert("Access Denied: You must be an Admin to edit this content.");
                 return;
@@ -1060,30 +1088,113 @@
             document.getElementById('edit-title').innerText = `Edit ${sec.toUpperCase()}`;
             fields.innerHTML = '';
 
-            if(sec === 'hero') {
+            // --- SERVICES EDIT ---
+            if(sec === 'services') {
+                siteData.services.forEach((s, idx) => {
+                    fields.innerHTML += `
+                        <div class="admin-item-row">
+                            <div class="admin-item-content">
+                                <label>Service ${idx + 1}</label>
+                                <input class="service-title-in" value="${s.title}" placeholder="Title">
+                                <input class="service-icon-in" value="${s.icon}" placeholder="Icon Class (fa-fish)">
+                                <textarea class="service-desc-in" rows="2" placeholder="Description">${s.desc}</textarea>
+                            </div>
+                            <button class="btn-danger" onclick="deleteItem('services', ${idx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+                fields.innerHTML += `<button class="btn-success" onclick="addItem('services')">+ Add Service</button>`;
+
+            // --- HERO EDIT ---
+            } else if(sec === 'hero') {
                 fields.innerHTML = `
                     <div class="modal-field"><label>Tagline</label><input id="inp-tag" value="${siteData.hero.tagline}"></div>
                     <div class="modal-field"><label>Subtext</label><textarea id="inp-sub" rows="3">${siteData.hero.subtext}</textarea></div>
                     <div class="modal-field"><label>Background URL</label><input id="inp-bg" value="${siteData.hero.bgImage}"></div>
                 `;
+            
+            // --- ABOUT EDIT ---
             } else if (sec === 'about') {
                 fields.innerHTML = `
                     <div class="modal-field"><label>About Text</label><textarea id="inp-bio" rows="6">${siteData.about.text}</textarea></div>
                 `;
+
+            // --- SHRIMP EDIT ---
             } else if (sec === 'shrimp') {
                 fields.innerHTML = `
                     <div class="modal-field"><label>Title</label><input id="inp-stitle" value="${siteData.shrimp.title}"></div>
                     <div class="modal-field"><label>Description</label><textarea id="inp-sdesc" rows="4">${siteData.shrimp.description}</textarea></div>
                     <div class="modal-field"><label>Varieties (comma separated)</label><input id="inp-svar" value="${siteData.shrimp.varieties.join(', ')}"></div>
                 `;
+
+            // --- GALLERY EDIT ---
             } else if (sec === 'gallery') {
+                // List existing images for deletion
+                siteData.gallery.forEach((img, idx) => {
+                    fields.innerHTML += `
+                        <div class="admin-item-row">
+                            <img src="${img.url}" class="btn-thumb">
+                            <div class="admin-item-content">
+                                <input class="gal-cap-in" value="${img.caption}" placeholder="Caption">
+                                <input disabled value="${img.url.substring(0,30)}..." style="background:#eee; font-size:0.8rem;">
+                            </div>
+                            <button class="btn-danger" onclick="deleteItem('gallery', ${idx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+                
+                fields.innerHTML += `
+                     <hr>
+                     <div class="modal-field"><label>Upload New Image</label><input type="file" id="inp-gfile" accept="image/*"></div>
+                     <div class="modal-field"><label>New Caption</label><input id="inp-gcap" placeholder="Short description"></div>
+                `;
+
+            // --- BLOG EDIT ---
+            } else if (sec === 'blog') {
+                siteData.blog.forEach((b, idx) => {
+                     fields.innerHTML += `
+                        <div class="admin-item-row">
+                            <div class="admin-item-content">
+                                <label>Post ${idx+1}</label>
+                                <input class="blog-title-in" value="${b.title}" placeholder="Title">
+                                <input class="blog-date-in" value="${b.date}" placeholder="Date">
+                                <textarea class="blog-content-in" rows="3">${b.content}</textarea>
+                            </div>
+                            <button class="btn-danger" onclick="deleteItem('blog', ${idx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+                fields.innerHTML += `<button class="btn-success" onclick="addItem('blog')">+ Add Post</button>`;
+            
+            // --- CONTACT EDIT ---
+            } else if (sec === 'contact') {
                 fields.innerHTML = `
-                     <div class="modal-field"><label>Upload Image</label><input type="file" id="inp-gfile" accept="image/*"></div>
-                     <div class="modal-field"><label>Caption</label><input id="inp-gcap" placeholder="Short description"></div>
+                    <div class="modal-field"><label>Email</label><input id="inp-email" value="${siteData.config.email}"></div>
+                    <div class="modal-field"><label>Location</label><input id="inp-loc" value="${siteData.config.location}"></div>
                 `;
             }
 
             modal.style.display = 'flex';
+        }
+
+        // Helper to add items dynamically
+        function addItem(type) {
+            if(type === 'services') {
+                siteData.services.push({ title: "New Service", icon: "fa-star", desc: "Description..." });
+            } else if (type === 'blog') {
+                siteData.blog.push({ title: "New Post", date: "JAN 2026", content: "Write content here..." });
+            }
+            openEdit(type); // Refresh modal
+        }
+
+        // Helper to delete items dynamically
+        function deleteItem(type, index) {
+            if(confirm("Are you sure you want to remove this item?")) {
+                if(type === 'services') siteData.services.splice(index, 1);
+                if(type === 'blog') siteData.blog.splice(index, 1);
+                if(type === 'gallery') siteData.gallery.splice(index, 1);
+                openEdit(type); // Refresh modal
+            }
         }
 
         function readFileAsBase64(file) {
@@ -1096,13 +1207,9 @@
         }
 
         async function saveToGithub() {
-            // STRICT SECURITY CHECK
-            if(!localStorage.getItem('isAdmin')) {
-                alert("Access Denied: Admin privileges required.");
-                return;
-            }
+            if(!localStorage.getItem('isAdmin')) return;
 
-            // Save text inputs locally first (non-gallery)
+            // 1. Collect Data based on Section
             if(currentSection === 'hero') {
                 siteData.hero.tagline = document.getElementById('inp-tag').value;
                 siteData.hero.subtext = document.getElementById('inp-sub').value;
@@ -1113,24 +1220,46 @@
                 siteData.shrimp.title = document.getElementById('inp-stitle').value;
                 siteData.shrimp.description = document.getElementById('inp-sdesc').value;
                 siteData.shrimp.varieties = document.getElementById('inp-svar').value.split(',').map(s=>s.trim());
+            } else if (currentSection === 'contact') {
+                siteData.config.email = document.getElementById('inp-email').value;
+                siteData.config.location = document.getElementById('inp-loc').value;
+            } else if (currentSection === 'services') {
+                // Rebuild Services Array
+                const titles = document.querySelectorAll('.service-title-in');
+                const icons = document.querySelectorAll('.service-icon-in');
+                const descs = document.querySelectorAll('.service-desc-in');
+                siteData.services = Array.from(titles).map((t, i) => ({
+                    title: t.value,
+                    icon: icons[i].value,
+                    desc: descs[i].value
+                }));
+            } else if (currentSection === 'blog') {
+                // Rebuild Blog Array
+                const titles = document.querySelectorAll('.blog-title-in');
+                const dates = document.querySelectorAll('.blog-date-in');
+                const contents = document.querySelectorAll('.blog-content-in');
+                siteData.blog = Array.from(titles).map((t, i) => ({
+                    title: t.value,
+                    date: dates[i].value,
+                    content: contents[i].value
+                }));
             } else if (currentSection === 'gallery') {
-                // SPECIAL LOGIC FOR IMAGE UPLOAD
+                // Update Captions for existing
+                const caps = document.querySelectorAll('.gal-cap-in');
+                siteData.gallery.forEach((img, i) => {
+                    if(caps[i]) img.caption = caps[i].value;
+                });
+
+                // Handle New Upload
                 const fileInput = document.getElementById('inp-gfile');
-                const cap = document.getElementById('inp-gcap').value;
+                const newCap = document.getElementById('inp-gcap').value;
                 
-                if (fileInput.files.length > 0) {
+                if (fileInput && fileInput.files.length > 0) {
                     const file = fileInput.files[0];
                     const token = localStorage.getItem('ghToken');
-                    
-                    if (!token) {
-                        alert("Image upload requires a valid GitHub Token.");
-                        return;
-                    }
-
-                    // Show saving state
+                    // Upload logic
                     const saveBtn = document.querySelector('.save-btn');
-                    const originalText = saveBtn.innerText;
-                    saveBtn.innerText = "Uploading Image...";
+                    saveBtn.innerText = "Uploading...";
                     saveBtn.disabled = true;
 
                     try {
@@ -1144,43 +1273,30 @@
                                 'Authorization': `token ${token}`,
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({
-                                message: `Upload ${file.name}`,
-                                content: content
-                            })
+                            body: JSON.stringify({ message: `Upload ${file.name}`, content: content })
                         });
                         
                         if (!req.ok) throw new Error("Image upload failed");
                         
-                        // Construct the public URL (Assuming GitHub Pages is active)
+                        // Add new image to array
                         const imageUrl = `https://${REPO_OWNER}.github.io/${REPO_NAME}/${filename}`;
-                        siteData.gallery.push({ url: imageUrl, caption: cap });
-
+                        siteData.gallery.push({ url: imageUrl, caption: newCap });
                     } catch (e) {
-                        console.error(e);
-                        alert("Error uploading image: " + e.message);
-                        saveBtn.innerText = originalText;
+                        alert("Upload Error: " + e.message);
                         saveBtn.disabled = false;
                         return;
                     }
-                } else {
-                    // No file selected, maybe just ignore or alert?
-                    alert("Please select a file to upload.");
-                    return;
                 }
             }
 
-            // Continue to save data.json
+            // 2. Save Data.json
             const saveBtn = document.querySelector('.save-btn');
             if(saveBtn) saveBtn.innerText = "Saving Data...";
 
             render();
             closeModals();
 
-            // GitHub Update for data.json
             const token = localStorage.getItem('ghToken');
-            if(!token) { alert("Saved locally! (Login with Token to save to GitHub)"); return; }
-
             try {
                 const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
                 const get = await fetch(url, { headers: { 'Authorization': `token ${token}` }});
@@ -1197,7 +1313,7 @@
                     })
                 });
 
-                if(put.ok) alert("Successfully saved to GitHub!");
+                if(put.ok) alert("Saved successfully!");
                 else alert("GitHub Error: " + put.statusText);
             } catch(e) {
                 console.error(e);
