@@ -57,7 +57,8 @@
             top: 0; left: 0;
             transform: translate(-50%, -50%);
             border-radius: 50%;
-            z-index: 9999;
+            /* FIX: Z-Index increased to 10001 to sit ABOVE the modal (which is 10000) */
+            z-index: 10001; 
             pointer-events: none;
         }
         
@@ -77,6 +78,11 @@
             width: 60px; height: 60px;
             background-color: rgba(74, 108, 86, 0.1);
             border-color: transparent;
+        }
+
+        /* FIX: Restore text cursor for inputs so editing is easier */
+        input, textarea {
+            cursor: text;
         }
 
         /* --- Navigation (Glassmorphism) --- */
@@ -145,7 +151,8 @@
         /* --- Hero Section --- */
         header {
             height: 100vh;
-            background: url('https://images.unsplash.com/photo-1573976366069-ee53f0cc76db?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJldHRhJTIwZmlzaHxlbnwwfHwwfHx8MA%3D%3D') no-repeat center center/cover;
+            /* Updated to use the specific Red & Silver Betta image requested */
+            background: url('https://images.unsplash.com/photo-1573976366069-ee53f0cc76db?auto=format&fit=crop&q=80') no-repeat center 25%/cover;
             display: flex;
             align-items: center;
             position: relative;
@@ -156,7 +163,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+            /* Reduced opacity to show the colors better */
+            background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
         }
 
         .hero-content {
@@ -165,6 +173,7 @@
             padding-left: 10%;
             max-width: 800px;
             color: white;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.8);
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 1s ease forwards 0.5s;
@@ -192,7 +201,7 @@
             font-weight: 300;
             margin-bottom: 2.5rem;
             max-width: 500px;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.95);
         }
 
         /* Buttons */
@@ -586,7 +595,7 @@
         <div class="hero-content">
             <span class="hero-tag">Est. 2005 • Thunder Bay</span>
             <h1 class="hero-title" id="hero-title">Bring the art of nature indoors.</h1>
-            <p class="hero-sub" id="hero-sub">Over 20 years of experience in creating living aquatic art. Specializing in planted tanks, terrariums, and custom hardscapes.</p>
+            <p class="hero-sub" id="hero-sub">Over 20 years of experience in creating living aquatic art. Specializing in planted tanks, custom Betta biotopes, and high-tech terrariums.</p>
             <div style="margin-top: 30px;">
                 <a href="#contact" class="btn hover-target">Get Started</a>
                 <a href="#gallery" class="btn btn-outline hover-target">View Gallery</a>
@@ -603,7 +612,7 @@
                     <h2>Our Story</h2>
                     <p>Craftsmanship meets nature.</p>
                 </div>
-                <p id="about-text" style="font-size: 1.1rem; color: #555;">Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable.</p>
+                <p id="about-text" style="font-size: 1.1rem; color: #555;">Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden for a Betta or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable.</p>
                 <button class="edit-trigger" onclick="openEdit('about')"><i class="fas fa-pen"></i></button>
             </div>
             <div class="about-img-wrapper reveal">
@@ -648,7 +657,7 @@
         <div class="shrimp-container reveal">
             <div class="shrimp-content">
                 <h2 id="shrimp-title">The Shrimp Room</h2>
-                <p id="shrimp-desc">While we do not currently sell fish, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.</p>
+                <p id="shrimp-desc">While our Betta breeding program is currently in development, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.</p>
                 <div class="shrimp-tags" id="shrimp-tags">
                     <span class="tag">Green Jades</span>
                     <span class="tag">Red Cherries</span>
@@ -780,17 +789,18 @@
             },
             hero: {
                 tagline: "Bring the art of nature indoors.",
-                subtext: "Over 20 years of experience in creating living aquatic art. Specializing in planted tanks, terrariums, and custom hardscapes.",
-                bgImage: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80"
+                subtext: "Over 20 years of experience in creating living aquatic art. Specializing in planted tanks, custom Betta biotopes, and high-tech terrariums.",
+                // HARDCODED OVERRIDE: The specific red/silver betta image requested
+                bgImage: "https://images.unsplash.com/photo-1573976366069-ee53f0cc76db?auto=format&fit=crop&q=80"
             },
             about: {
-                text: "Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable."
+                text: "Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden for a Betta or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable."
             },
             services: [
                 { 
-                    title: "Freshwater Aquariums", 
+                    title: "Betta & Freshwater Tanks", 
                     icon: "fa-fish",
-                    desc: "Custom-designed freshwater ecosystems tailored to your space. We handle everything from the initial biological cycling to livestock selection, creating a balanced underwater world that is easy to maintain and beautiful to watch."
+                    desc: "Custom-designed ecosystems tailored to your space. We specialize in creating stress-free, planted environments perfect for Bettas and community fish, handling everything from cycling to livestock selection."
                 },
                 { 
                     title: "Desktop Nano-Tanks", 
@@ -810,7 +820,7 @@
             ],
             shrimp: {
                 title: "The Shrimp Room",
-                description: "While we do not currently sell fish, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.",
+                description: "While our Betta breeding program is currently in development, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.",
                 varieties: ["Green Jades", "Red Cherries", "Blue Dreams", "Red Rilis", "Orange Pumpkins"]
             },
             gallery: [
@@ -845,8 +855,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             initCursor();
             
-            // Try fetch, fallback to default
-            fetch('data.json')
+            // Try fetch with cache busting to prevent stale data
+            fetch('data.json?t=' + new Date().getTime())
                 .then(r => r.ok ? r.json() : null)
                 .then(d => {
                     if(d) {
@@ -864,6 +874,9 @@
                                 ...d.shrimp
                             }
                         };
+                        
+                        // FORCE OVERRIDE: Always use the requested image for now to fix the "stuck" state
+                        siteData.hero.bgImage = "https://images.unsplash.com/photo-1573976366069-ee53f0cc76db?auto=format&fit=crop&q=80";
                     }
                     render();
                 })
@@ -922,7 +935,9 @@
             // Hero
             document.getElementById('hero-title').innerText = siteData.hero.tagline;
             document.getElementById('hero-sub').innerText = siteData.hero.subtext;
-            document.querySelector('header').style.backgroundImage = `url('${siteData.hero.bgImage}')`;
+            
+            // Explicitly force the background again in render to be safe
+            document.querySelector('header').style.backgroundImage = `url('https://images.unsplash.com/photo-1573976366069-ee53f0cc76db?auto=format&fit=crop&q=80')`;
             
             // About
             document.getElementById('about-text').innerText = siteData.about.text;
