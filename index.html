@@ -145,7 +145,8 @@
         /* --- Hero Section --- */
         header {
             height: 100vh;
-            background: url('https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80') no-repeat center center/cover;
+            /* Updated to RED BETTA IMAGE directly in CSS */
+            background: url('https://images.unsplash.com/photo-1534043464124-383296a3efd3?auto=format&fit=crop&q=80') no-repeat center center/cover;
             display: flex;
             align-items: center;
             position: relative;
@@ -156,7 +157,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+            /* Reduced opacity from 0.7 to 0.3 so the RED color pops */
+            background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
         }
 
         .hero-content {
@@ -165,6 +167,7 @@
             padding-left: 10%;
             max-width: 800px;
             color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Added text shadow for readability on lighter bg */
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 1s ease forwards 0.5s;
@@ -192,7 +195,7 @@
             font-weight: 300;
             margin-bottom: 2.5rem;
             max-width: 500px;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.95);
         }
 
         /* Buttons */
@@ -247,6 +250,9 @@
             transform: translateY(50px);
             transition: all 0.8s ease;
         }
+        /* Fallback: If JS fails, ensure content is visible */
+        .no-js .reveal { opacity: 1 !important; transform: none !important; }
+        
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* --- Services (Modern Cards) --- */
@@ -274,7 +280,18 @@
         .icon-box {
             font-size: 2.5rem;
             color: var(--accent);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .service-card p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.6;
         }
 
         /* --- About Split Layout --- */
@@ -397,6 +414,7 @@
         }
 
         .blog-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .blog-card p { font-size: 1rem; color: #555; line-height: 1.6; }
 
         /* --- Contact & Footer --- */
         footer {
@@ -570,8 +588,8 @@
     <header id="hero">
         <div class="hero-content">
             <span class="hero-tag">Est. 2005 • Thunder Bay</span>
-            <h1 class="hero-title" id="hero-title">Loading...</h1>
-            <p class="hero-sub" id="hero-sub">Loading...</p>
+            <h1 class="hero-title" id="hero-title">Bring the art of nature indoors.</h1>
+            <p class="hero-sub" id="hero-sub">Over 20 years of experience in creating living aquatic art. Specializing in planted tanks, terrariums, and custom hardscapes.</p>
             <div style="margin-top: 30px;">
                 <a href="#contact" class="btn hover-target">Get Started</a>
                 <a href="#gallery" class="btn btn-outline hover-target">View Gallery</a>
@@ -588,7 +606,7 @@
                     <h2>Our Story</h2>
                     <p>Craftsmanship meets nature.</p>
                 </div>
-                <p id="about-text" style="font-size: 1.1rem; color: #555;">Loading...</p>
+                <p id="about-text" style="font-size: 1.1rem; color: #555;">Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable.</p>
                 <button class="edit-trigger" onclick="openEdit('about')"><i class="fas fa-pen"></i></button>
             </div>
             <div class="about-img-wrapper reveal">
@@ -604,7 +622,27 @@
             <p>Bespoke aquatic environments for your home or office.</p>
         </div>
         <div class="services-grid" id="services-grid">
-            <!-- JS Injection -->
+            <!-- Static Initial Content with RICH TEXT -->
+            <div class="service-card reveal">
+                <div class="icon-box"><i class="fas fa-fish"></i></div>
+                <h3>Freshwater Aquariums</h3>
+                <p>Custom-designed freshwater ecosystems tailored to your space. We handle everything from the initial biological cycling to livestock selection, creating a balanced underwater world that is easy to maintain and beautiful to watch.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="icon-box"><i class="fas fa-leaf"></i></div>
+                <h3>Desktop Nano-Tanks</h3>
+                <p>Compact, low-maintenance worlds perfect for home offices. These miniature aquascapes bring a sense of calm and focus to your workday without requiring large equipment or extensive space.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="icon-box"><i class="fas fa-seedling"></i></div>
+                <h3>Ripariums & Terrariums</h3>
+                <p>Unique semi-aquatic setups where plants grow above the waterline (Ripariums) or fully enclosed terrestrial moist environments (Terrariums). Perfect for growing rare orchids, mosses, and marginal plants.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="icon-box"><i class="fas fa-mountain"></i></div>
+                <h3>Hardscape & Layouts</h3>
+                <p>The 'skeleton' of your aquarium. We provide professional hardscaping services using premium materials like Seiryu stone, Dragon stone, and Manzanita wood to create depth, perspective, and flow before water is even added.</p>
+            </div>
         </div>
     </section>
 
@@ -612,15 +650,18 @@
     <section id="shrimp" class="shrimp-section">
         <div class="shrimp-container reveal">
             <div class="shrimp-content">
-                <h2 id="shrimp-title">Loading...</h2>
-                <p id="shrimp-desc">Loading...</p>
+                <h2 id="shrimp-title">The Shrimp Room</h2>
+                <p id="shrimp-desc">While we do not currently sell fish, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.</p>
                 <div class="shrimp-tags" id="shrimp-tags">
-                    <!-- JS Injection -->
+                    <span class="tag">Green Jades</span>
+                    <span class="tag">Red Cherries</span>
+                    <span class="tag">Blue Dreams</span>
+                    <span class="tag">Red Rilis</span>
+                    <span class="tag">Orange Pumpkins</span>
                 </div>
                 <button class="edit-trigger" onclick="openEdit('shrimp')"><i class="fas fa-pen"></i></button>
             </div>
             <div class="shrimp-img">
-                <!-- Decorative Icon/Image for Shrimp -->
                 <i class="fas fa-water" style="font-size: 8rem; color: rgba(255,255,255,0.1);"></i>
             </div>
         </div>
@@ -632,7 +673,30 @@
             <h2>Selected Works</h2>
         </div>
         <div class="gallery-grid" id="gallery-grid">
-            <!-- JS Injection -->
+            <div class="gallery-item reveal hover-target">
+                <img src="https://images.unsplash.com/photo-1517621182283-7c3905085e79?auto=format&fit=crop&q=80">
+                <div class="gallery-overlay">
+                    <div class="gallery-text">Mountain Scape - Seiryu Stone Iwagumi</div>
+                </div>
+            </div>
+             <div class="gallery-item reveal hover-target">
+                <img src="https://images.unsplash.com/photo-1534431940927-4409386d9969?auto=format&fit=crop&q=80">
+                <div class="gallery-overlay">
+                    <div class="gallery-text">Forest Path - Driftwood & Ferns</div>
+                </div>
+            </div>
+             <div class="gallery-item reveal hover-target">
+                <img src="https://images.unsplash.com/photo-1546272580-b79116e45330?auto=format&fit=crop&q=80">
+                <div class="gallery-overlay">
+                    <div class="gallery-text">Hardscape Structure - Pre-Planting</div>
+                </div>
+            </div>
+             <div class="gallery-item reveal hover-target">
+                <img src="https://images.unsplash.com/photo-1497250681960-ef04820a38bb?auto=format&fit=crop&q=80">
+                <div class="gallery-overlay">
+                    <div class="gallery-text">Lush Greenery - Nature Style</div>
+                </div>
+            </div>
         </div>
         <div style="text-align: center; margin-top: 2rem;">
             <button class="edit-trigger" onclick="openEdit('gallery')"><i class="fas fa-plus"></i> Add Image</button>
@@ -645,7 +709,16 @@
             <h2>Knowledge & Process</h2>
         </div>
         <div class="blog-grid" id="blog-grid">
-            <!-- JS Injection -->
+            <div class="blog-card reveal">
+                <span class="blog-date">OCT 2025</span>
+                <h3>The Nitrogen Cycle Explained</h3>
+                <p>Before adding fish, your tank must 'cycle'. This article explains how beneficial bacteria convert harmful ammonia into safe nitrates, establishing the biological foundation of your aquarium.</p>
+            </div>
+            <div class="blog-card reveal">
+                <span class="blog-date">NOV 2025</span>
+                <h3>Why We Use Tissue Culture Plants</h3>
+                <p>We exclusively use tissue culture plants to ensure your setup remains pest-free. Unlike potted plants, these are grown in sterile labs, guaranteeing no snails or algae are introduced to your new tank.</p>
+            </div>
         </div>
     </section>
 
@@ -655,8 +728,8 @@
             <div class="contact-block">
                 <h3>Superior Aquascaping</h3>
                 <div class="contact-info">
-                    <p><i class="fas fa-envelope"></i> <span id="contact-email">...</span></p>
-                    <p><i class="fas fa-map-marker-alt"></i> <span id="contact-loc">...</span></p>
+                    <p><i class="fas fa-envelope"></i> <span id="contact-email">Superior.Aquascapes@gmail.com</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="contact-loc">Thunder Bay, Ontario</span></p>
                 </div>
             </div>
         </div>
@@ -710,32 +783,57 @@
             },
             hero: {
                 tagline: "Bring the art of nature indoors.",
-                subtext: "Over 20 years of experience in creating living aquatic art. Specializing in planted tanks, terrariums, and custom hardscapes.",
-                bgImage: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80"
+                subtext: "Over 20 years of experience. Specializing in planted tanks, custom Betta biotopes, and high-tech terrariums.",
+                // Updated to a Betta Fish background (Vibrant Red)
+                bgImage: "https://images.unsplash.com/photo-1534043464124-383296a3efd3?auto=format&fit=crop&q=80"
             },
             about: {
-                text: "Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden or a complex riparium, I focus on the craftsmanship of nature."
+                text: "Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden for a Betta or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable."
             },
             services: [
-                { title: "Freshwater Aquariums", icon: "fa-fish" },
-                { title: "Ripariums & Terrariums", icon: "fa-leaf" },
-                { title: "Custom Hardscapes", icon: "fa-mountain" },
-                { title: "Mosses & Botanicals", icon: "fa-seedling" }
+                { 
+                    title: "Betta & Freshwater Tanks", 
+                    icon: "fa-fish",
+                    desc: "Custom-designed ecosystems tailored to your space. We specialize in creating stress-free, planted environments perfect for Bettas and community fish, handling everything from cycling to livestock selection."
+                },
+                { 
+                    title: "Desktop Nano-Tanks", 
+                    icon: "fa-leaf",
+                    desc: "Compact, low-maintenance worlds perfect for home offices. These miniature aquascapes bring a sense of calm and focus to your workday without requiring large equipment or extensive space."
+                },
+                { 
+                    title: "Ripariums & Terrariums", 
+                    icon: "fa-seedling",
+                    desc: "Unique semi-aquatic setups where plants grow above the waterline (Ripariums) or fully enclosed terrestrial moist environments (Terrariums). Perfect for growing rare orchids, mosses, and marginal plants."
+                },
+                { 
+                    title: "Hardscape & Layouts", 
+                    icon: "fa-mountain",
+                    desc: "The 'skeleton' of your aquarium. We provide professional hardscaping services using premium materials like Seiryu stone, Dragon stone, and Manzanita wood to create depth, perspective, and flow before water is even added."
+                }
             ],
             shrimp: {
                 title: "The Shrimp Room",
-                description: "While we do not currently sell fish, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.",
+                description: "While our Betta breeding program is currently in development, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.",
                 varieties: ["Green Jades", "Red Cherries", "Blue Dreams", "Red Rilis", "Orange Pumpkins"]
             },
             gallery: [
-                { url: "https://images.unsplash.com/photo-1517621182283-7c3905085e79?auto=format&fit=crop&q=80", caption: "Natural Driftwood Layout" },
-                { url: "https://images.unsplash.com/photo-1534431940927-4409386d9969?auto=format&fit=crop&q=80", caption: "Planted Tank Detail" },
-                { url: "https://images.unsplash.com/photo-1546272580-b79116e45330?auto=format&fit=crop&q=80", caption: "Hardscape Structure" },
-                { url: "https://images.unsplash.com/photo-1497250681960-ef04820a38bb?auto=format&fit=crop&q=80", caption: "Lush Greenery" }
+                { url: "https://images.unsplash.com/photo-1517621182283-7c3905085e79?auto=format&fit=crop&q=80", caption: "Mountain Scape - Seiryu Stone Iwagumi" },
+                { url: "https://images.unsplash.com/photo-1534431940927-4409386d9969?auto=format&fit=crop&q=80", caption: "Forest Path - Driftwood & Ferns" },
+                { url: "https://images.unsplash.com/photo-1546272580-b79116e45330?auto=format&fit=crop&q=80", caption: "Hardscape Structure - Pre-Planting" },
+                { url: "https://images.unsplash.com/photo-1497250681960-ef04820a38bb?auto=format&fit=crop&q=80", caption: "Lush Greenery - Nature Style" }
             ],
             blog: [
-                { title: "Preparing Driftwood", date: "OCT 2025", content: "Boiling driftwood is essential to release tannins and ensure it sinks..." },
-                { title: "Why Live Plants?", date: "NOV 2025", content: "Live plants act as the lungs of your aquarium, absorbing nitrates..." }
+                { 
+                    title: "The Nitrogen Cycle Explained", 
+                    date: "OCT 2025", 
+                    content: "Before adding fish, your tank must 'cycle'. This article explains how beneficial bacteria convert harmful ammonia into safe nitrates, establishing the biological foundation of your aquarium." 
+                },
+                { 
+                    title: "Why We Use Tissue Culture Plants", 
+                    date: "NOV 2025", 
+                    content: "We exclusively use tissue culture plants to ensure your setup remains pest-free. Unlike potted plants, these are grown in sterile labs, guaranteeing no snails or algae are introduced to your new tank." 
+                }
             ]
         };
 
@@ -750,13 +848,39 @@
         // --- 2. INIT & RENDER ---
         document.addEventListener('DOMContentLoaded', () => {
             initCursor();
-            initScrollAnim();
             
             // Try fetch, fallback to default
-            fetch('data.json').then(r => r.ok ? r.json() : null).then(d => {
-                if(d) siteData = d;
-                render();
-            }).catch(() => render());
+            fetch('data.json')
+                .then(r => r.ok ? r.json() : null)
+                .then(d => {
+                    if(d) {
+                        // SMART MERGE: If fetched data is missing fields, use DEFAULT_DATA
+                        siteData = {
+                            ...DEFAULT_DATA,
+                            ...d,
+                            services: (d.services && d.services.length) ? d.services.map((s, i) => ({
+                                ...s,
+                                desc: s.desc || DEFAULT_DATA.services[i]?.desc || "Custom aquatic ecosystem service."
+                            })) : DEFAULT_DATA.services,
+                            blog: (d.blog && d.blog.length) ? d.blog : DEFAULT_DATA.blog,
+                            shrimp: {
+                                ...DEFAULT_DATA.shrimp,
+                                ...d.shrimp
+                            }
+                        };
+                        
+                        // FIX: Detect if OLD image is being used and FORCE new image
+                        const oldImage = "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80";
+                        if(siteData.hero.bgImage === oldImage) {
+                            siteData.hero.bgImage = DEFAULT_DATA.hero.bgImage;
+                        }
+                    }
+                    render();
+                })
+                .catch(e => {
+                    console.log("Using Default Data due to:", e);
+                    render();
+                });
 
             // Check Admin Status on Load
             if(localStorage.getItem('isAdmin')) {
@@ -794,6 +918,9 @@
                     document.getElementById('navLinks').classList.remove('active');
                 });
             });
+            
+            // Run scroll anim initial check
+            initScrollAnim();
         });
 
         function toggleMobileMenu() {
@@ -815,6 +942,7 @@
                 <div class="service-card reveal">
                     <div class="icon-box"><i class="fas ${s.icon}"></i></div>
                     <h3>${s.title}</h3>
+                    <p>${s.desc || 'Bespoke aquatic design and maintenance services.'}</p>
                 </div>
             `).join('');
 
@@ -845,6 +973,9 @@
             // Contact
             document.getElementById('contact-email').innerText = siteData.config.email;
             document.getElementById('contact-loc').innerText = siteData.config.location;
+            
+            // Re-trigger scroll observer for new content
+            initScrollAnim();
         }
 
         // --- 3. CURSOR LOGIC ---
@@ -873,10 +1004,17 @@
         }
 
         // --- 4. ANIMATION LOGIC ---
+        let observer;
         function initScrollAnim() {
-            const observer = new IntersectionObserver((entries) => {
+            if (observer) observer.disconnect(); // Clear old observer to prevent duplicates
+            
+            observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if(entry.isIntersecting) entry.target.classList.add('active');
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: Stop observing once active
+                        // observer.unobserve(entry.target);
+                    }
                 });
             }, { threshold: 0.1 });
 
