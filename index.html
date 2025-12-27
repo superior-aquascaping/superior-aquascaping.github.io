@@ -145,8 +145,7 @@
         /* --- Hero Section --- */
         header {
             height: 100vh;
-            /* Updated to RED BETTA IMAGE directly in CSS */
-            background: url('https://images.unsplash.com/photo-1534043464124-383296a3efd3?auto=format&fit=crop&q=80') no-repeat center center/cover;
+            background: url('https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80') no-repeat center center/cover;
             display: flex;
             align-items: center;
             position: relative;
@@ -157,8 +156,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            /* Reduced opacity from 0.7 to 0.3 so the RED color pops */
-            background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
         }
 
         .hero-content {
@@ -167,7 +165,6 @@
             padding-left: 10%;
             max-width: 800px;
             color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Added text shadow for readability on lighter bg */
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 1s ease forwards 0.5s;
@@ -195,7 +192,7 @@
             font-weight: 300;
             margin-bottom: 2.5rem;
             max-width: 500px;
-            color: rgba(255,255,255,0.95);
+            color: rgba(255,255,255,0.9);
         }
 
         /* Buttons */
@@ -783,18 +780,17 @@
             },
             hero: {
                 tagline: "Bring the art of nature indoors.",
-                subtext: "Over 20 years of experience. Specializing in planted tanks, custom Betta biotopes, and high-tech terrariums.",
-                // Updated to a Betta Fish background (Vibrant Red)
-                bgImage: "https://images.unsplash.com/photo-1534043464124-383296a3efd3?auto=format&fit=crop&q=80"
+                subtext: "Over 20 years of experience in creating living aquatic art. Specializing in planted tanks, terrariums, and custom hardscapes.",
+                bgImage: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80"
             },
             about: {
-                text: "Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden for a Betta or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable."
+                text: "Located in Thunder Bay, I have spent over two decades mastering the hobby of aquascaping. My goal is to create natural, calm, and artistic environments that thrive. Whether it is a desktop mini-garden or a complex riparium, I focus on the craftsmanship of nature, ensuring every setup is both beautiful and biologically stable."
             },
             services: [
                 { 
-                    title: "Betta & Freshwater Tanks", 
+                    title: "Freshwater Aquariums", 
                     icon: "fa-fish",
-                    desc: "Custom-designed ecosystems tailored to your space. We specialize in creating stress-free, planted environments perfect for Bettas and community fish, handling everything from cycling to livestock selection."
+                    desc: "Custom-designed freshwater ecosystems tailored to your space. We handle everything from the initial biological cycling to livestock selection, creating a balanced underwater world that is easy to maintain and beautiful to watch."
                 },
                 { 
                     title: "Desktop Nano-Tanks", 
@@ -814,7 +810,7 @@
             ],
             shrimp: {
                 title: "The Shrimp Room",
-                description: "While our Betta breeding program is currently in development, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.",
+                description: "While we do not currently sell fish, we specialize in breeding high-grade Neocaridina shrimp. These active, colorful cleaners are perfect for planted nano-tanks.",
                 varieties: ["Green Jades", "Red Cherries", "Blue Dreams", "Red Rilis", "Orange Pumpkins"]
             },
             gallery: [
@@ -868,12 +864,6 @@
                                 ...d.shrimp
                             }
                         };
-                        
-                        // FIX: Detect if OLD image is being used and FORCE new image
-                        const oldImage = "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80";
-                        if(siteData.hero.bgImage === oldImage) {
-                            siteData.hero.bgImage = DEFAULT_DATA.hero.bgImage;
-                        }
                     }
                     render();
                 })
